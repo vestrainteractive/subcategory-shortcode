@@ -95,7 +95,7 @@ add_action('plugins_loaded', function() {
     // Ensure the class exists before instantiating
     if ( class_exists( 'GitHub_Updater' ) ) {
         // Initialize the updater
-        new GitHub_Updater( 'estimated-read-time', 'https://github.com/vestrainteractive/estimated-read-time', '1.0.0' ); // Replace with actual values
+        new GitHub_Updater( 'estimated-read-time', 'https://github.com/vestrainteractive/subcategory-shortcode', '1.0.0' ); // Replace with actual values
         error_log( 'GitHub Updater class instantiated.' );
     } else {
         error_log( 'GitHub_Updater class not found.' );
