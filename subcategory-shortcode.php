@@ -81,19 +81,23 @@ function subcategory_list_thumbs_shortcode( $atts ) {
 // Add shortcode
 add_shortcode( 'subcategory_list_thumbs', 'subcategory_list_thumbs_shortcode' );
 
-// Register activation hook (optional)
-register_activation_hook( __FILE__, 'subcategory_list_thumbs_activation' );
-
-function subcategory_list_thumbs_activation() {
-  // (Optional) Add activation logic here, like flushing rewrite rules
-}
-
 // Include the GitHub Updater class
-if ( file_exists( plugin_dir_path( __FILE__ ) . 'class-github-updater.php' ) ) {
-    require_once plugin_dir_path( __FILE__ ) . 'class-github-updater.php';
-}
+add_action('plugins_loaded', function() {
+    $file = plugin_dir_path( __FILE__ ) . 'class-github-updater.php';
 
-// Initialize the updater
-add_action( 'init', function() {
-    new GitHub_Updater( 'subcategory-shortcode', 'vestrainteractive/subcategory-shortcode' ); // Replace with your plugin slug and folder name
+    if ( file_exists( $file ) ) {
+        require_once $file;
+        error_log( 'GitHub Updater file included successfully.' );
+    } else {
+        error_log( 'GitHub Updater file not found at: ' . $file );
+    }
+
+    // Ensure the class exists before instantiating
+    if ( class_exists( 'GitHub_Updater' ) ) {
+        // Initialize the updater
+        new GitHub_Updater( 'estimated-read-time', 'https://github.com/vestrainteractive/estimated-read-time', '1.0.0' ); // Replace with actual values
+        error_log( 'GitHub Updater class instantiated.' );
+    } else {
+        error_log( 'GitHub_Updater class not found.' );
+    }
 });
